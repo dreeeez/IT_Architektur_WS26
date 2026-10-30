@@ -1,0 +1,28 @@
+# macOS
+.DS_Store
+._*
+
+# Editoren / IDEs
+.vscode/
+.idea/
+*.swp
+
+# Word-Lockfiles (entstehen beim Öffnen von .docx)
+~$*
+
+# Lokale Claude-Code-Einstellungen
+.claude/settings.local.json
+
+# Prototyp (allgemein, ggf. im prototyp/-Ordner präzisieren)
+node_modules/
+dist/
+build/
+.venv/
+__pycache__/
+*.pyc
+.env
+.env.*
+!.env.example
+
+# Generierte Dokumente (werden per scripts/build-docx.sh erzeugt)
+build-out/
