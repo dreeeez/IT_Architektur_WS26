@@ -1,0 +1,30 @@
+# arc42 Kap. 3.2 – Technischer Kontext
+# Nummerierte Kästchen (S1–S10) markieren die Schnittstellen an der Systemgrenze, Details in der Tabelle in Kap. 3.2.
+...@_stil.d2
+direction: right
+
+zl_it: "Zulieferer-System" {class: extern}
+zl_klein: "Zulieferer\n(Browser)" {class: person}
+dv: "Datenverantwortliche\n(Browser)" {class: person}
+erp: "ERP / Etikettendruck" {class: extern}
+idp: "Identity Provider" {class: extern}
+
+voltpass: "VoltPass\n(Blackbox)" {class: system; width: 240; height: 440}
+
+oeff: "Öffentlichkeit\n(Smartphone)" {class: person}
+werk: "Werkstatt /\nRecycler (Browser)" {class: person}
+beh: "Behörden\n(Browser / API)" {class: person}
+reg: "EU-Register" {class: extern}
+treu: "Treuhänder\n(Annahme A-3)" {class: annahme}
+
+# Kästchen am Systemende jeder Verbindung = Schnittstelle Sx
+zl_it -> voltpass: "HTTPS/REST" {target-arrowhead: {shape: box; style: {filled: true; stroke: "#4f46e5"}; label: S1}}
+zl_klein -> voltpass: "HTTPS" {target-arrowhead: {shape: box; style: {filled: true; stroke: "#4f46e5"}; label: S2}}
+dv -> voltpass: "HTTPS" {target-arrowhead: {shape: box; style: {filled: true; stroke: "#4f46e5"}; label: S3}}
+erp -> voltpass: "HTTPS/REST" {target-arrowhead: {shape: box; style: {filled: true; stroke: "#4f46e5"}; label: S4}}
+idp -> voltpass: "OIDC" {target-arrowhead: {shape: box; style: {filled: true; stroke: "#4f46e5"}; label: S10}}
+voltpass <- oeff: "HTTPS" {source-arrowhead: {shape: box; style: {filled: true; stroke: "#4f46e5"}; label: S5}}
+voltpass <- werk: "HTTPS" {source-arrowhead: {shape: box; style: {filled: true; stroke: "#4f46e5"}; label: S6}}
+voltpass <- beh: "HTTPS" {source-arrowhead: {shape: box; style: {filled: true; stroke: "#4f46e5"}; label: S7}}
+voltpass <- reg: "HTTPS/REST" {source-arrowhead: {shape: box; style: {filled: true; stroke: "#4f46e5"}; label: S8}}
+voltpass <- treu: "SFTP" {source-arrowhead: {shape: box; style: {filled: true; stroke: "#4f46e5"}; label: S9}}

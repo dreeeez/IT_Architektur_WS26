@@ -86,13 +86,15 @@ Vorlesung donnerstags 17:45–19:15 via Zoom.
 </details>
 
 <details>
-<summary><b>Word-Dokument erzeugen</b></summary>
+<summary><b>Word-Dokument / PDF erzeugen</b></summary>
 
 Voraussetzung: [pandoc](https://pandoc.org) (`brew install pandoc`).
 
 ```bash
 ./scripts/build-docx.sh 4    # Kapitel 1–4 für PL 1
 ./scripts/build-docx.sh      # alle Kapitel für PL 2
+./scripts/build-pdf.sh 4     # dasselbe als PDF (über Chrome, Stil: scripts/pdf.css)
+./scripts/render-diagrams.sh # alle D2-Diagramme neu rendern (brew install d2)
 ```
 
 Die Datei landet in `build-out/` (nicht versioniert). Liegt eine `docs/vorlage.docx` vor, wird sie als Formatvorlage genutzt. Die finale Abgabe kommt nach `abgabe/PL1` bzw. `abgabe/PL2`.

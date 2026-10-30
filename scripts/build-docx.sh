@@ -20,5 +20,11 @@ out="build-out/arc42_Kapitel_1-${bis}.docx"
 ref=()
 [[ -f docs/vorlage.docx ]] && ref=(--reference-doc=docs/vorlage.docx)
 
-pandoc "${files[@]}" -o "$out" --toc --resource-path=docs/arc42:docs "${ref[@]}"
+# ${ref[@]+...}: leeres Array ist unter macOS-Bash 3.2 mit "set -u" sonst ein Fehler
+# --columns=9999: keine festen Spaltenbreiten aus den Markdown-Tabellen, Breite passt sich dem Inhalt an
+pandoc "${files[@]}" -o "$out" --toc --columns=9999 --resource-path=docs/arc42:docs \
+  --metadata title="Digitaler Produktpass – Architekturdokumentation (arc42)" \
+  --metadata subtitle="VoltCell GmbH · IT-Architektur WS 2026/27 · HdM Stuttgart" \
+  --metadata lang=de-DE --metadata toc-title="Inhalt" \
+  ${ref[@]+"${ref[@]}"}
 echo "Erstellt: $out"

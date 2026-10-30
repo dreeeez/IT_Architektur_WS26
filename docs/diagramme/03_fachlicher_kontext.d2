@@ -1,0 +1,29 @@
+# arc42 Kap. 3.1 – Fachlicher Kontext (System als Blackbox)
+...@_stil.d2
+direction: right
+
+zl_it: "Zulieferer\n(mit eigener IT)" {class: extern}
+zl_klein: "Zulieferer\n(Kleinbetrieb ohne IT)" {class: person}
+dv: "Datenverantwortliche\nVoltCell" {class: person}
+erp: "ERP / Produktion\nVoltCell" {class: extern}
+
+voltpass: "VoltPass\nBatteriepass-Plattform" {class: system; width: 260; height: 140}
+
+oeff: "Öffentlichkeit /\nEndkunde" {class: person}
+werk: "Werkstatt" {class: person}
+rec: "Recycler" {class: person}
+beh: "Behörden\n(Marktaufsicht, Kommission)" {class: person}
+reg: "EU-Register\n(VO 2024/1781)" {class: extern}
+treu: "Treuhänder\n(Annahme A-3)" {class: annahme}
+
+zl_it -> voltpass: "Rohstoff-, CO₂-, Materialdaten"
+zl_klein -> voltpass: "Datenblätter (PDF, CSV),\nFormulareingaben"
+dv <-> voltpass: "Prüfaufgaben\n/ Korrekturen, Freigaben"
+erp <-> voltpass: "Seriennummer, Modell\n/ Kennung + QR-Code"
+
+voltpass -> oeff: "öffentliche Passdaten"
+voltpass <-> werk: "erweiterte Daten\n/ Zustand (SoH)"
+voltpass <-> rec: "Demontage-, Materialdaten\n/ Status „recycelt“"
+voltpass -> beh: "alle Passdaten\n+ Änderungshistorie"
+voltpass -> reg: "Kennung des Passes"
+voltpass -> treu: "Kopie aller Pässe"
