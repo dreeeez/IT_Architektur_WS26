@@ -1,49 +1,102 @@
-/* Stil für scripts/build-pdf.sh – passend zu den D2-Diagrammen (Slate/Indigo) */
+/* Stil für scripts/build-pdf.sh – ruhig und klar, angelehnt an examples.arc42.org (biking2):
+   Serifen-Überschriften, warme dunkle Schrift, Tabellen nur mit waagerechten Haarlinien. */
 @page {
   size: A4;
-  margin: 20mm 18mm 22mm;
-  @bottom-center { content: counter(page); font-size: 9pt; color: #64748b; }
+  margin: 22mm 22mm 24mm;
+  @bottom-center { content: counter(page); font-size: 8.5pt; color: #5e6975; }
 }
-:root { --text: #0f172a; --muted: #64748b; --line: #cbd5e1; --accent: #4f46e5; --accent-soft: #e0e7ff; }
-html { font-family: -apple-system, "Helvetica Neue", Calibri, Arial, sans-serif; font-size: 10pt; color: var(--text); line-height: 1.5; }
+@page :first { @bottom-center { content: none; } }
+:root {
+  --ink: #2a2e34;          /* Fließtext */
+  --ground: #2f2922;       /* Überschriften, Tabellenkopf */
+  --muted: #5e6975;        /* Nebentexte */
+  --hairline: #e3e5e8;     /* Linien zwischen Tabellenzeilen */
+  --border: #b8b6b5;       /* Tabellenrahmen */
+  --wash: #ecedee;         /* Tabellenkopf, Gruppenzeilen */
+  --rule: #c6ccd4;         /* Strich links an Hinweisboxen */
+  --serif: "Libre Caslon Text", Georgia, "Times New Roman", serif;
+  --sans: -apple-system, "Helvetica Neue", Calibri, Arial, sans-serif;
+}
+html { font-family: var(--sans); font-size: 10pt; color: var(--ink); line-height: 1.55; }
 body { margin: 0; max-width: none; }
 
-/* Titelblock */
-header#title-block-header { margin: 30mm 0 14mm; padding-bottom: 8mm; border-bottom: 3px solid var(--accent); }
-header .title { font-size: 26pt; line-height: 1.15; margin: 0 0 4mm; letter-spacing: -0.01em; }
-header .subtitle { font-size: 12pt; color: var(--muted); margin: 0; }
+/* ---------- Deckblatt (scripts/deckblatt.py) ---------- */
+.deckblatt { height: 251mm; position: relative; page-break-after: always; break-after: page; text-align: center; font-size: 11pt; color: var(--ink); }
+/* Klassischer Aufbau einer Hausarbeit; Serifenschrift nur für den Titel (Untertitel unter dem Logo) */
+.db-kopf { padding-top: 4mm; line-height: 1.9; }
+.db-mitte { margin-top: 40mm; }
+.db-logo { display: block; width: 135mm; height: auto; margin: 0 auto 2mm; }
+.db-art { margin-top: 9mm; margin-bottom: 3mm; }
+.db-unter { font-family: var(--serif); font-weight: 700; font-size: 14pt; color: var(--ground); }
+.db-angaben { position: absolute; bottom: 8mm; left: 14mm; text-align: left; line-height: 1.6; }
+.db-angaben p { margin: 0 0 5mm; text-align: left; hyphens: manual; }
+.db-angaben b { font-weight: 600; color: var(--ground); }
 
-/* Inhaltsverzeichnis */
-nav#TOC { page-break-after: always; }
-nav#TOC::before { content: "Inhalt"; display: block; font-size: 16pt; font-weight: 700; margin-bottom: 4mm; color: var(--accent); }
-nav#TOC ul { list-style: none; padding-left: 0; }
-nav#TOC ul ul { padding-left: 6mm; }
-nav#TOC li { margin: 1.2mm 0; }
-nav#TOC a { color: var(--text); text-decoration: none; }
+/* ---------- Inhaltsverzeichnis ---------- */
+.inhalt { padding-top: 6mm; }
+.ik-kopf { font-family: var(--serif); font-weight: 700; font-size: 17pt; color: var(--ground); margin-bottom: 5mm; }
+.ik-liste { list-style: none; margin: 0; padding: 0; max-width: 120mm; }
+.ik-kap { display: grid; grid-template-columns: 11mm 1fr; align-items: baseline; break-inside: avoid; padding: 3mm 0; border-top: 1px solid var(--hairline); margin: 0; }
+.ik-nr { font-family: var(--serif); font-weight: 700; font-size: 17pt; color: var(--ground); line-height: 1; }
+.ik-titel { font-family: var(--serif); font-weight: 700; font-size: 12pt; color: var(--ground); text-decoration: none; }
+.vs { margin-bottom: 12mm; padding-bottom: 8mm; border-bottom: 1px solid var(--border); }
+.vs-kopf { font-family: var(--serif); font-weight: 700; font-size: 26pt; color: var(--ground); margin-bottom: 6mm; }
+.vs p { margin: 0 0 3mm; }
 
-/* Überschriften: jedes Kapitel auf neuer Seite */
-h1 { font-size: 18pt; color: var(--accent); margin: 0 0 4mm; page-break-before: always; letter-spacing: -0.01em; }
-h2 { font-size: 13pt; margin: 7mm 0 2.5mm; page-break-after: avoid; }
+/* Überschriften: Serifenschrift, jedes Kapitel auf neuer Seite */
+h1, h2, h3 { font-family: var(--serif); font-weight: 700; color: var(--ground); line-height: 1.25; }
+/* Zwischenüberschriften (Ebene 3) fett in der Grundschrift */
+h3 { font-family: var(--sans); }
+h1 { font-size: 20pt; margin: 0 0 6mm; page-break-before: always; }
+h2 { font-size: 13.5pt; margin: 9mm 0 3mm; page-break-after: avoid; }
+h3 { font-size: 10.8pt; margin: 6mm 0 1.5mm; page-break-after: avoid; break-after: avoid; }
+h3 + p, h3 + table, h3 + ul { page-break-before: avoid; break-before: avoid; }
 h1 + blockquote, h2 + p { page-break-before: avoid; }
 
-/* Hinweisboxen (Status, Architekturauftrag) */
-blockquote { margin: 3mm 0; padding: 2.5mm 4mm; background: #f8fafc; border-left: 3px solid var(--accent); color: #334155; border-radius: 0 6px 6px 0; }
-blockquote p { margin: 0; }
+/* Absätze und Listen */
+p { margin: 0 0 3mm; }
+ul, ol { margin: 0 0 3mm; padding-left: 6mm; }
+li + li { margin-top: 1.2mm; }
+strong { color: var(--ground); }
 
-/* Tabellen */
-table { width: 100%; border-collapse: collapse; margin: 3mm 0 5mm; font-size: 8.6pt; page-break-inside: auto; }
+/* Fließtext im Blocksatz mit Silbentrennung (Tabellen bleiben linksbündig) */
+p { text-align: justify; hyphens: auto; -webkit-hyphens: auto; }
+td, th, li, figcaption, header p { text-align: left; hyphens: manual; }
+
+/* Hinweisboxen (Status, Architekturauftrag): nur ein Strich links */
+blockquote { margin: 4mm 0; padding: 0.5mm 0 0.5mm 4mm; border-left: 3px solid var(--rule); color: var(--muted); }
+blockquote p { margin: 0; }
+blockquote strong { color: var(--ink); }
+
+/* Tabellen: Rahmen außen, innen nur waagerechte Haarlinien, kein Zebra */
+table { width: calc(100% - 1px); border-collapse: collapse; margin: 3mm 0 6mm; font-size: 8.8pt; line-height: 1.45; border: 1px solid var(--border); page-break-inside: auto; }
 thead { display: table-header-group; }
 tr { page-break-inside: avoid; }
-th { background: var(--accent-soft); color: #1e1b4b; text-align: left; font-weight: 700; }
-th, td { border: 1px solid var(--line); padding: 1.6mm 2mm; vertical-align: top; }
-tbody tr:nth-child(even) td { background: #f8fafc; }
+th, td { padding: 1.8mm 2.4mm; vertical-align: top; border: 0; border-bottom: 1px solid var(--hairline); }
+th { background: var(--wash); color: var(--ground); text-align: left; font-weight: 700; }
+tbody tr:last-child td { border-bottom: 0; }
 /* erste Spalte (IDs) schmal halten */
-td:first-child { white-space: nowrap; font-weight: 600; color: #3730a3; }
+td:first-child { white-space: nowrap; font-weight: 700; color: var(--ground); }
+/* Gruppenzeilen (erste Zelle leer, Titel fett in der zweiten Zelle) */
+tbody tr:has(td:first-child:empty) td { background: #f5f5f4; padding-top: 1.3mm; padding-bottom: 1.3mm; border-top: 1px solid var(--border); }
 
 /* Abbildungen */
-figure { margin: 4mm 0 6mm; text-align: center; page-break-inside: avoid; }
+figure { margin: 5mm 0 7mm; text-align: center; page-break-inside: avoid; }
 figure img, p > img { max-width: 100%; max-height: 175mm; }
 figcaption { font-size: 8.5pt; color: var(--muted); margin-top: 2mm; }
 
-a { color: var(--accent); }
-code { font-size: 9pt; background: #f1f5f9; padding: 0 1mm; border-radius: 3px; }
+a { color: var(--ground); text-decoration: underline; text-decoration-color: #9b9895; text-underline-offset: 0.18em; }
+code { font-size: 8.8pt; background: var(--wash); padding: 0 1mm; border-radius: 3px; }
+/* Gruppenzeile nie allein am Seitenende */
+tbody tr:has(td:first-child:empty) { break-after: avoid; page-break-after: avoid; }
+/* letzte Spalte (meist „Bezug“ mit 2–3 IDs) nicht zu schmal werden lassen */
+td:last-child { min-width: 19mm; }
+
+/* Kap. 2: kurze Titel links etwas breiter, damit Gruppenzeilen nicht umbrechen */
+table.rb td:nth-child(2), table.rb th:nth-child(2) { width: 38mm; }
+.neue-seite { break-before: page; page-break-before: always; }
+td ul { margin: 0; padding-left: 3.6mm; }
+td ul li { margin: 0; }
+td p { margin: 0 0 1mm; text-align: left; hyphens: manual; }
+table.zusammen { break-inside: avoid; page-break-inside: avoid; }
+figure { text-align: center; } figure img { display: block; margin-left: auto; margin-right: auto; }

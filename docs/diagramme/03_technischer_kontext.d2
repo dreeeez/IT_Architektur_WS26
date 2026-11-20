@@ -1,30 +1,100 @@
-# arc42 Kap. 3.2 – Technischer Kontext
-# Nummerierte Kästchen (S1–S10) markieren die Schnittstellen an der Systemgrenze, Details in der Tabelle in Kap. 3.2.
-...@_stil.d2
-direction: right
+# Technischer Kontext von VoltPass (arc42 Kap. 3.2) als UML-Verteilungsdiagramm, angelehnt an das arc42-Beispiel Biking:
+# 3D-Quader = Knoten (Gerät oder Server), Kasten mit Komponentensymbol = Software-Komponente.
+# Kästchen am Rand von VoltPass mit S1 bis S7 = Schnittstellen an der Systemgrenze (Details in der Tabelle 3.2).
+# elk-abstand: 13
+# Pfeilrichtung = wer die Verbindung aufbaut, Beschriftung = Protokoll und Port.
 
-zl_it: "Zulieferer-System" {class: extern}
-zl_klein: "Zulieferer\n(Browser)" {class: person}
-dv: "Datenverantwortliche\n(Browser)" {class: person}
-erp: "ERP / Etikettendruck" {class: extern}
-idp: "Identity Provider" {class: extern}
+vars: {
+  d2-config: {
+    layout-engine: elk
+    sketch: true
+    pad: 20
+  }
+}
 
-voltpass: "VoltPass\n(Blackbox)" {class: system; width: 240; height: 440}
+direction: down
 
-oeff: "Öffentlichkeit\n(Smartphone)" {class: person}
-werk: "Werkstatt /\nRecycler (Browser)" {class: person}
-beh: "Behörden\n(Browser / API)" {class: person}
-reg: "EU-Register" {class: extern}
-treu: "Treuhänder\n(Annahme A-3)" {class: annahme}
+classes: {
+  knoten: {
+    width: 220
+    height: 96
+    label.near: center-center
+    style: {fill: "#ffffff"; stroke: "#1a1a1a"; stroke-width: 1; 3d: true; font-color: "#1a1a1a"; font-size: 16; bold: true}
+  }
+  komponente: {
+    width: 220
+    height: 80
+    icon: ../bilder/icons/komponente_uml.svg
+    icon.near: top-right
+    label.near: center-center
+    style: {fill: "#ffffff"; stroke: "#1a1a1a"; stroke-width: 1; font-color: "#1a1a1a"; font-size: 16; bold: true}
+  }
+  port: {
+    width: 40
+    height: 30
+    style: {fill: "#ffffff"; stroke: "#1a1a1a"; stroke-width: 1; font-color: "#1a1a1a"; font-size: 13; bold: true}
+  }
+}
 
-# Kästchen am Systemende jeder Verbindung = Schnittstelle Sx
-zl_it -> voltpass: "HTTPS/REST" {target-arrowhead: {shape: box; style: {filled: true; stroke: "#4f46e5"}; label: S1}}
-zl_klein -> voltpass: "HTTPS" {target-arrowhead: {shape: box; style: {filled: true; stroke: "#4f46e5"}; label: S2}}
-dv -> voltpass: "HTTPS" {target-arrowhead: {shape: box; style: {filled: true; stroke: "#4f46e5"}; label: S3}}
-erp -> voltpass: "HTTPS/REST" {target-arrowhead: {shape: box; style: {filled: true; stroke: "#4f46e5"}; label: S4}}
-idp -> voltpass: "OIDC" {target-arrowhead: {shape: box; style: {filled: true; stroke: "#4f46e5"}; label: S10}}
-voltpass <- oeff: "HTTPS" {source-arrowhead: {shape: box; style: {filled: true; stroke: "#4f46e5"}; label: S5}}
-voltpass <- werk: "HTTPS" {source-arrowhead: {shape: box; style: {filled: true; stroke: "#4f46e5"}; label: S6}}
-voltpass <- beh: "HTTPS" {source-arrowhead: {shape: box; style: {filled: true; stroke: "#4f46e5"}; label: S7}}
-voltpass <- reg: "HTTPS/REST" {source-arrowhead: {shape: box; style: {filled: true; stroke: "#4f46e5"}; label: S8}}
-voltpass <- treu: "SFTP" {source-arrowhead: {shape: box; style: {filled: true; stroke: "#4f46e5"}; label: S9}}
+kontext: "deployment Technischer Kontext" {
+  label.near: top-left
+  style: {fill: "#ffffff"; stroke: "#1a1a1a"; stroke-width: 1; font-size: 15; bold: true}
+
+  (** -> **)[*].style: {stroke: "#1a1a1a"; stroke-width: 1; font-color: "#1a1a1a"; font-size: 14; italic: false}
+  (** <- **)[*].style: {stroke: "#1a1a1a"; stroke-width: 1; font-color: "#1a1a1a"; font-size: 14; italic: false}
+
+  # ---------- Links: rufen VoltPass auf ----------
+  browser: "«device»\nBrowser\nP-02, P-03, P-04,\nP-06, P-07, P-08" {class: knoten; height: 110; width: 220}
+  smartphone: "«device»\nSmartphone\nP-05" {class: knoten}
+  zulieferer: "«server»\nZulieferer-System\nP-04" {class: knoten}
+  erp: "«server, intern»\nERP und Produktion\nP-01" {class: knoten}
+  behoerden: "«server»\nBehörden-System\nP-08" {class: knoten}
+
+  # ---------- Mitte: VoltPass mit Schnittstellen ----------
+  voltpass: "«system»\nVoltPass" {
+    class: komponente
+    width: 1150
+    height: 130
+    style: {stroke-width: 2; font-size: 20}
+  }
+
+
+  # ---------- Rechts: von VoltPass aufgerufen ----------
+  register: "«server»\nEU-Register\nP-09" {class: knoten}
+  treuhaender: "«server, Annahme»\nTreuhänder\nP-10" {class: knoten}
+  idp: "«server, intern»\nFirmen-Login VoltCell" {class: knoten}
+  ki: "«server»\nKI-Dienst in der EU" {class: knoten}
+
+
+
+  # Unsichtbare Hilfspunkte: Pfeilspitze in der Linie, Kästchen am Rand
+  knick_browser: "" {width: 1; height: 1; style: {opacity: 0}}
+  knick_smartphone: "" {width: 1; height: 1; style: {opacity: 0}}
+  knick_zulieferer: "" {width: 1; height: 1; style: {opacity: 0}}
+  knick_erp: "" {width: 1; height: 1; style: {opacity: 0}}
+  knick_behoerden: "" {width: 1; height: 1; style: {opacity: 0}}
+  knick_register: "" {width: 1; height: 1; style: {opacity: 0}}
+  knick_treuhaender: "" {width: 1; height: 1; style: {opacity: 0}}
+  knick_ki: "" {width: 1; height: 1; style: {opacity: 0}}
+  knick_idp: "" {width: 1; height: 1; style: {opacity: 0}}
+
+  # ---------- Verbindungen: Kästchen am Rand von VoltPass = Schnittstelle ----------
+  browser -> knick_browser: "HTTPS, 443"
+  knick_browser -> voltpass: {target-arrowhead: {shape: box; label: S1}}
+  smartphone -> knick_smartphone: "HTTPS, 443"
+  knick_smartphone -> voltpass: {target-arrowhead: {shape: box; label: S2}}
+  zulieferer -> knick_zulieferer: "REST über HTTPS, 443"
+  knick_zulieferer -> voltpass: {target-arrowhead: {shape: box; label: S3}}
+  erp -> knick_erp: "REST über HTTPS, 443"
+  knick_erp -> voltpass: {target-arrowhead: {shape: box; label: S3}}
+  behoerden -> knick_behoerden: "REST über HTTPS, 443"
+  knick_behoerden -> voltpass: {target-arrowhead: {shape: box; label: S3}}
+  voltpass <- knick_register: {source-arrowhead: {shape: box; label: S4}}
+  knick_register -> register: "REST über HTTPS, 443"
+  voltpass <- knick_treuhaender: {source-arrowhead: {shape: box; label: S5}}
+  knick_treuhaender -> treuhaender: "SFTP, 22"
+  voltpass <- knick_ki: {source-arrowhead: {shape: box; label: S6}}
+  knick_ki -> ki: "HTTPS, 443"
+  voltpass <- knick_idp: {source-arrowhead: {shape: box; label: S7}}
+  knick_idp -> idp: "OpenID Connect über HTTPS, 443"
+}

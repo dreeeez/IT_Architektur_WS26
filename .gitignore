@@ -26,3 +26,18 @@ __pycache__/
 
 # Generierte Dokumente (werden per scripts/build-docx.sh erzeugt)
 build-out/
+
+# Zwischendateien der Diagramme (PNG wird versioniert, SVG nicht)
+docs/diagramme/*.svg
+
+# Nur lokal: Arbeitsmaterial, Notizen, Archiv
+material/
+notes/
+docs/referenz/
+docs/archiv/
+docs/fall.md
+CLAUDE.md
+docs/bilder/voltpass_logo_weiss.png
+docs/bilder/icons/*
+!docs/bilder/icons/akteur_uml.svg
+!docs/bilder/icons/komponente_uml.svg

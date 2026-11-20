@@ -1,60 +1,52 @@
 # 2. Randbedingungen
 
-> **Status: Entwurf v0.1.** Paragrafen-Angaben beziehen sich auf VO (EU) 2023/1542 und sind vor der Abgabe am Originaltext (EUR-Lex) zu prüfen.
-
 <!-- arc42-Hilfe:
 Randbedingungen und Vorgaben, die die Freiheiten bei Entwurf, Implementierung oder Entwicklungsprozess einschränken.
 Form: einfache Tabellen mit Erläuterungen, getrennt nach technisch, organisatorisch/rechtlich und Konventionen.
 Mehr: https://docs.arc42.org/section-2/
 -->
 
-Die folgenden Vorgaben schränken den Lösungsraum ein. Sie sind nicht verhandelbar, entweder weil sie aus dem Fall stammen oder weil das Gesetz sie vorschreibt.
-
-## 2.1 Technische Randbedingungen
+## 2.1 Technologische Randbedingungen
 
 | ID | Randbedingung | Hintergrund / Motivation |
 |---|---|---|
-| TR-1 | Der QR-Code wird aufgedruckt und ist danach **nicht mehr änderbar**. | Fall R-2. Die im QR-Code codierte Adresse muss über die gesamte Lebensdauer gültig bleiben. |
-| TR-2 | Kennung und QR-Code entsprechen **ISO/IEC 15459** (oder gleichwertig). | Art. 77 Abs. 3 |
-| TR-3 | Daten in **offenen Standards**, maschinenlesbar, strukturiert und durchsuchbar, **ohne Anbieterbindung** übertragbar. | Art. 77 Abs. 8, Art. 78 lit. a |
-| TR-4 | Mengengerüst: rund **200.000 neue Pässe pro Jahr**, nach 10 Jahren also rund 2 Mio. Pässe. | Fall R-1 |
-| TR-5 | Zulieferdaten kommen in **uneinheitlichen Formaten**, von der API bis zum PDF-Datenblatt. | Fall K-1 |
-| TR-6 | Zulieferer müssen **ohne eigene IT** teilnehmen können, d. h. nur mit einem Browser. | Fall R-3 |
-| TR-7 | Der Prototyp läuft auf frei wählbarer Plattform (Free Tier, HdM-Infrastruktur oder eigener Rechner). | Modulvorgabe |
+| | **Kennung und QR-Code** | |
+| TR-1 | QR-Code unveränderlich | Der QR-Code wird aufgedruckt und ist danach nicht änderbar. Die Adresse darin muss die ganze Lebensdauer gültig bleiben, auch wenn VoltCell wegfällt. |
+| TR-2 | Kennung nach ISO/IEC 15459 | Die Batterieverordnung VO (EU) 2023/1542 schreibt in Art. 77 diese Norm für die Kennung jeder Batterie vor. So ist jede Kennung weltweit eindeutig. |
+| | **Daten und Formate** | |
+| TR-3 | Offene Standards | Die Batterieverordnung verlangt maschinenlesbare Daten ohne Anbieterbindung. Das schränkt Formate und Technologiewahl ein. |
+| TR-4 | Mengengerüst | Rund 200.000 neue Pässe pro Jahr, nach 10 Jahren rund 2 Mio. |
+| TR-5 | Datenfelder vorgegeben | Anhang XIII der Batterieverordnung legt Felder und Zugriffsstufen fest. Das Datenmodell ist damit weitgehend vorgegeben. |
+| | **Anbindung** | |
+| TR-6 | Uneinheitliche Zulieferdaten | Zulieferer liefern in unterschiedlichen Formaten, von der API bis zum PDF-Datenblatt. |
+| TR-7 | Teilnahme nur mit Browser | Auch Zulieferer ohne eigene IT müssen ohne Installation teilnehmen können. |
+| TR-8 | Bestehende Systeme anbinden | Das ERP von VoltCell und das EU-Register werden angebunden, nicht ersetzt. Ihre Schnittstellen sind vorgegeben, ihre genaue Form nehmen wir an. |
+| | **Projektrahmen** | |
+| TR-9 | Kostengünstige, verbreitete Technik | Wegen begrenzten Budgets und Zeitaufwands werden kostenlose oder günstige Technologien bevorzugt, die verbreitet und gut dokumentiert sind. |
+| TR-10 | Begrenzte Infrastruktur | Der Prototyp läuft möglichst kostenlos, z. B. auf HdM-Infrastruktur oder lokal. Langzeitbetrieb und hohe Lasten werden dort nicht berücksichtigt. |
 
-## 2.2 Organisatorische und rechtliche Randbedingungen
+## 2.2 Organisatorische Randbedingungen
 
 | ID | Randbedingung | Hintergrund / Motivation |
 |---|---|---|
-| OR-1 | **Batteriepass-Pflicht ab 18.02.2027** für LV-Batterien und Industriebatterien über 2 kWh. | Art. 77 Abs. 1 |
-| OR-2 | **Drei Zugriffsstufen:** öffentlich, Personen mit berechtigtem Interesse, Behörden und Kommission. Wer genau als „berechtigt“ gilt, legt ein Durchführungsrechtsakt der Kommission fest. | Art. 77 Abs. 2 und 9, Anhang XIII |
-| OR-3 | Der Pass muss **verfügbar bleiben, auch wenn VoltCell nicht mehr existiert**. | Fall K-4, Art. 78 lit. e |
-| OR-4 | Der Pass wird **gelöscht, sobald die Batterie recycelt ist**. Bei Wiederverwendung entsteht ein neuer Pass, der mit dem alten verknüpft ist. | Art. 77 Abs. 6 und 7 |
-| OR-5 | Daten dürfen bei **Dritten** gespeichert werden. Diese dürfen sie aber nicht verkaufen oder anderweitig verwenden. | Art. 78 lit. c, d |
-| OR-6 | Die Kennung jedes Passes wird im **EU-Register** für digitale Produktpässe hinterlegt. | Art. 77, VO (EU) 2024/1781 Art. 13 |
-| OR-7 | Zugang zum Pass ist für alle Berechtigten **unentgeltlich**. | Art. 78 lit. b |
-| OR-8 | **DSGVO**: Nutzerkonten, Ansprechpartner der Zulieferer und die Änderungshistorie enthalten personenbezogene Daten. | VO (EU) 2016/679 |
-| OR-9 | Studienprojekt: Team aus Studierenden, kein Budget, Abgaben **26.11.2026** (Kap. 1–4) und **21.01.2027** (vollständig + Prototyp). | Modulvorgabe |
+| | **Gesetzliche Vorgaben** | |
+| OR-1 | Fester Stichtag | Ab 18.02.2027 braucht jede neue E-Bike-Batterie und jede Industriebatterie über 2 kWh einen Pass. Der Termin ist gesetzlich fix, der Umfang der ersten Ausbaustufe richtet sich danach. |
+| OR-2 | Drei Zugriffsstufen | Die Architektur muss die drei Zugriffsstufen der Batterieverordnung nach Art. 77 und Anhang XIII technisch durchsetzen: • öffentliche Daten • Daten für Personen mit berechtigtem Interesse • Daten für Behörden und EU-Kommission |
+| OR-3 | 10 Jahre erreichbar | Die Batterieverordnung verlangt mindestens 10 Jahre Erreichbarkeit. Das muss auch bei Insolvenz oder Geschäftsaufgabe von VoltCell gelten. |
+| OR-4 | Datenschutz | Nutzerkonten, Ansprechpartner der Zulieferer und die Änderungshistorie enthalten personenbezogene Daten und fallen unter die DSGVO. |
+| | **Projektrahmen** | |
+| OR-5 | Eigenentwicklung | Annahme: VoltPass wird von der internen IT-Abteilung von VoltCell entwickelt und betrieben. |
+| OR-6 | Team | Das Entwicklungsteam erstellt Architektur und Prototyp neben dem Studium und mit sehr begrenztem Budget. |
+| OR-7 | Zeitplan | Das Modul gibt zwei Abgaben vor: • Kap. 1–4 am 26.11.2026 • Vollständige Doku und Präsentation des Prototyps am 21.01.2027 |
+| OR-8 | Vorgehen | Iterativ: Das Feedback zur ersten Abgabe fließt in die vollständige Doku ein. |
+| OR-9 | Prototyp | Der Prototyp muss mindestens eine fachliche Anforderung lauffähig umsetzen. Plattform und Technologie sind frei wählbar. |
 
 ## 2.3 Konventionen
 
 | ID | Konvention | Hintergrund / Motivation |
 |---|---|---|
-| KV-1 | Dokumentation nach **arc42**, Sprache Deutsch, Abgabe als .docx | Modulvorgabe |
-| KV-2 | **Durchgehende IDs**: F-x (Use Cases), QZ-x (Qualitätsziele), SH-x (Stakeholder), TR-/OR-x (Randbedingungen), A-x (Annahmen), S-x (Schnittstellen), ST-x (Strategien) | Rückverfolgbarkeit über alle Kapitel |
-| KV-3 | Diagramme als Code mit **D2**, Quelle liegt im Repository | Versionierbar, im Team bearbeitbar |
-| KV-4 | Architekturentscheidungen als **ADR** (Kap. 9) | Entscheidungen samt Alternativen nachvollziehbar |
-
-## 2.4 Annahmen
-
-Die Fallbeschreibung lässt einige Punkte offen. Damit wir weiterarbeiten können, treffen wir folgende Annahmen. Die zugehörigen Fragen stehen in [`docs/fall.md` § 6](../fall.md#6-offene-fragen-an-den-dozenten).
-
-| ID | Annahme | Offene Frage |
-|---|---|---|
-| A-1 | VoltCell bringt die Batterien selbst in Verkehr und ist damit der für den Pass verantwortliche Wirtschaftsakteur. | – |
-| A-2 | Die Speichersysteme von VoltCell haben mehr als 2 kWh und sind damit passpflichtig. | – |
-| A-3 | Für den Fall, dass VoltCell wegfällt, wird ein unabhängiger **Treuhänder** beauftragt, der eine aktuelle Kopie aller Pässe hält und den Betrieb übernimmt. | Nr. 1 |
-| A-4 | VoltCell besitzt ein ERP-System, das Seriennummer und Modell jeder Batterie kennt und den Etikettendruck ansteuert. | Nr. 3 |
-| A-5 | Die KI-Extraktion darf einen externen Dienst nutzen, sofern dieser in der EU betrieben wird. | Nr. 4 |
-| A-6 | Werkstätten und Recycler registrieren sich und weisen ihr berechtigtes Interesse einmalig nach. Danach melden sie sich mit einem Konto an. | Nr. 5 |
-| A-7 | Die KI-Extraktion erzeugt nur Vorschläge, die ein Mensch freigibt. Wir nehmen an, dass sie damit nicht als Hochrisiko-System nach dem EU AI Act gilt. | Nr. 4 |
+| KV-1 | Architekturdokumentation | Aufbau nach arc42, Abgabe als Word-Dokument. |
+| KV-2 | Sprache | Deutsch, Fachbegriffe wie State of Health im Original. |
+| KV-3 | Durchgehende IDs | Jedes Element hat eine ID, damit alle Kapitel aufeinander verweisen können. |
+| KV-4 | Diagramme | Alle Diagramme einheitlich in D2, Schnittstellen mit ID. |
+| KV-5 | Architekturentscheidungen | Als ADR in Kap. 9 mit Kontext, Alternativen, Begründung und Konsequenzen. |

@@ -1,109 +1,62 @@
-# 🔋 Digitaler Produktpass – IT-Architektur WS 2026/27
+# VoltPass – Architekturdokumentation nach arc42
 
-Studienprojekt im Modul **IT-Architektur** an der HdM Stuttgart (Dozent: Dominic Hübsch).
-Wir dokumentieren für **Fall 02 – Batteriehersteller VoltCell** eine Lösungsarchitektur nach **arc42** und zeigen mit einem **lauffähigen Prototyp**, dass sie trägt.
+VoltPass ist das System, mit dem die VoltCell GmbH die digitalen Batteriepässe für ihre Batterien erstellt und verwaltet. Dieses Repository enthält die Architekturdokumentation nach [arc42](https://arc42.org) als Docs-as-Code: Markdown und D2-Diagramme, aus denen per Skript ein PDF oder Word-Dokument entsteht.
 
-![Fall 02 – Digitaler Produktpass auf einen Blick](docs/referenz/fall02_bigpicture.png)
+Studienprojekt im Modul IT-Architektur, HdM Stuttgart, WS 2026/27. Team siehe [`docs/team.md`](docs/team.md).
 
-## Worum geht's?
+**Stand:** Kapitel 1–4 (Abgabe PL 1, 26.11.2026). Kapitel 5–12 und der Prototyp folgen mit PL 2.
 
-VoltCell stellt Batterien für E-Bikes und Speichersysteme her. Nach der EU-Batterieverordnung braucht jede Batterie einen **digitalen Produktpass per QR-Code** mit Angaben zu Rohstoffherkunft, CO₂-Fußabdruck, Zustand und Recycling.
+## Inhalt
 
-> **Architekturauftrag:** Aus unzuverlässigen Zulieferdaten einen verlässlichen Pass machen, der jedem genau das zeigt, was er sehen darf, und das noch in vielen Jahren.
-
-Die schwierigen Stellen sind schlechte Datenformate mit KI-Extraktion, Rollen mit unterschiedlichen Rechten, ein lückenloser Audit-Trail und eine Erreichbarkeit von über 10 Jahren. Details mit IDs (K-x, R-x) und offene Fragen stehen in **[`docs/fall.md`](docs/fall.md)**, das ist der Startpunkt für alle.
-
-## Stand & nächste Schritte
-
-- [x] Repo-Struktur, arc42-Gerüst mit Hilfetexten, ADR-Vorlage
-- [x] Fall gewählt und aufbereitet ([`docs/fall.md`](docs/fall.md))
-- [ ] Offene Fragen an den Dozenten klären ([`docs/fall.md` § 6](docs/fall.md#6-offene-fragen-an-den-dozenten))
-- [ ] Stakeholder, fachliche Anforderungen (F-x) und Qualitätsziele (Q-x) festlegen
-- [ ] **PL 1:** Kapitel 1–4 schreiben und als .docx abgeben (**26.11.2026**)
-- [ ] Prototyp-Slice auswählen und Tech-Stack entscheiden (als ADR)
-- [ ] **PL 2:** Kapitel 5–12, Prototyp, Präsentation (**21.01.2027**)
-
-## Schnelleinstieg
-
-| Ich will … | Hier entlang |
+| Kapitel | Datei |
 |---|---|
-| den Fall verstehen | [`docs/fall.md`](docs/fall.md) |
-| an der Doku schreiben | [`docs/arc42/`](docs/arc42/) – eine Datei pro Kapitel, PL 1 = [`01`](docs/arc42/01_einfuehrung_und_ziele.md) · [`02`](docs/arc42/02_randbedingungen.md) · [`03`](docs/arc42/03_kontextabgrenzung.md) · [`04`](docs/arc42/04_loesungsstrategie.md) |
-| eine Entscheidung festhalten | [`docs/adr/_vorlage.md`](docs/adr/_vorlage.md) kopieren |
-| wissen, was der Dozent gesagt hat | [`notes/`](notes/) |
-| ins Skript / die Fallbeispiele schauen | [`material/`](material/) |
-| am Prototyp arbeiten | [`prototyp/`](prototyp/) |
+| Architekturüberblick | [`00_architekturueberblick.md`](docs/arc42/00_architekturueberblick.md) |
+| 1. Einführung und Ziele | [`01_einfuehrung_und_ziele.md`](docs/arc42/01_einfuehrung_und_ziele.md) |
+| 2. Randbedingungen | [`02_randbedingungen.md`](docs/arc42/02_randbedingungen.md) |
+| 3. Kontextabgrenzung | [`03_kontextabgrenzung.md`](docs/arc42/03_kontextabgrenzung.md) |
+| 4. Lösungsstrategie | [`04_loesungsstrategie.md`](docs/arc42/04_loesungsstrategie.md) |
 
-## Termine & Bewertung
-
-| Was | Wann |
-|---|---|
-| **PL 1** – arc42 Kapitel 1–4 als .docx über Moodle, danach Feedback | **26.11.2026** |
-| **PL 2** – vollständige Doku (vorher in Moodle) + Prototyp-Demo + Vortrag | **21.01.2027** _(Jahr mit Dozent klären)_ |
-
-Note: **Doku 20 %** · **Prototyp 20 %** · **Vortrag inkl. Fragen 60 %** (auch Theoriefragen aus dem Skript).
-Vorlesung donnerstags 17:45–19:15 via Zoom.
-
-## Tipps des Dozenten (aus [`notes/`](notes/))
-
-- **Umfang** am Fahrradbeispiel orientieren ([biking.michael-simons.eu/docs](https://biking.michael-simons.eu/docs/)). Implementierungsdetails sind zu viel.
-- **Viele Tabellen** verwenden, das hat er klar gesagt.
-- **IDs durchziehen:** Jedes Qualitätsziel bekommt eine ID, die sich durch das ganze Dokument zieht.
-- **Kapitel 1:** betrieblicher Grund, Use Cases als Tabelle, Anforderungen klären.
-- **Kapitel 3:** Schnittstellen im technischen Kontext nummerieren und in einer Tabelle erklären (Protokoll, Port …).
-- **Kapitel 4:** Lösungsstrategie als Tabelle mit den Spalten Strategie → bediente Anforderungen und Qualitätsziele.
-- Als Architekt **keine eigenen Anforderungen einbringen**, sondern beraten.
-
-## Arbeitsweise
-
-- **In Markdown schreiben**, nicht in Word. Die .docx erzeugen wir erst zur Abgabe (siehe unten).
-- **Eine Datei pro Kapitel**, so können mehrere Leute parallel arbeiten.
-- **Hilfetexte:** Jedes Kapitel enthält die offiziellen arc42-Hilfetexte als `<!-- arc42-Hilfe: … -->`. Im Editor sind sie sichtbar, in der Vorschau und in der .docx nicht.
-- **Entscheidungen als ADR** unter `docs/adr/ADR-00X-titel.md` ablegen und in Kapitel 9 verlinken.
-- **Diagramme:** Quelldatei (.drawio, .puml, .mmd) immer mit einchecken, nicht nur das Bild.
-- **Branches:** pro Thema ein Branch (z. B. `kap03-kontext`), Merge in `main` per Pull Request mit kurzem Review.
-- **Notizen** als `notes/JJJJ-MM-TT.md` ablegen.
-
-<details>
-<summary><b>Ordnerstruktur</b></summary>
+## Aufbau
 
 ```
-.
-├── docs/
-│   ├── fall.md       # Fallbeschreibung, IDs, offene Fragen – Startpunkt
-│   ├── arc42/        # Die 12 arc42-Kapitel als Markdown
-│   ├── adr/          # Architekturentscheidungen (_vorlage.md kopieren)
-│   ├── diagramme/    # Diagramm-Quellen + exportierte PNG/SVG
-│   └── referenz/     # Hilfsmaterial (arc42 kompakt, Fallübersicht, Big-Picture-Bild)
-├── prototyp/         # Code des technischen Prototyps
-├── praesentation/    # Folien für PL 2
-├── abgabe/PL1, PL2/  # Finale .docx-Abgaben
-├── notes/            # Vorlesungsnotizen (JJJJ-MM-TT.md)
-├── material/         # Skript, Fallbeispiele, SDD-Exkurs (PDF)
-├── scripts/          # Hilfsskripte, z. B. Markdown → .docx
-└── CLAUDE.md         # Projektkontext für Claude Code
+docs/
+├── arc42/        Kapitel als Markdown, eine Datei je Kapitel
+├── diagramme/    D2-Quellen (.d2) und gerenderte Bilder (.png)
+├── bilder/       Logo und UML-Symbole für Deckblatt und Diagramme
+├── team.md       Namen für das Deckblatt
+└── vorlage.docx  Formatvorlage für den Word-Export
+scripts/
+├── build-pdf.sh         PDF bauen (pandoc → HTML → Chrome)
+├── build-docx.sh        Word-Dokument bauen (pandoc)
+├── render-diagrams.sh   D2-Diagramme neu rendern
+├── deckblatt.py         Deckblatt und Inhaltsverzeichnis für das PDF
+├── ids-nobreak.lua      pandoc-Filter: IDs, Spaltenbreiten, Listen in Tabellen
+└── pdf.css              Layout des PDFs
 ```
-</details>
 
-<details>
-<summary><b>Word-Dokument / PDF erzeugen</b></summary>
+## Dokument bauen
 
-Voraussetzung: [pandoc](https://pandoc.org) (`brew install pandoc`).
+Voraussetzungen: [pandoc](https://pandoc.org), Python 3 und Google Chrome (die Skripte erwarten Chrome unter macOS).
 
 ```bash
-./scripts/build-docx.sh 4    # Kapitel 1–4 für PL 1
-./scripts/build-docx.sh      # alle Kapitel für PL 2
-./scripts/build-pdf.sh 4     # dasselbe als PDF (über Chrome, Stil: scripts/pdf.css)
-./scripts/render-diagrams.sh # alle D2-Diagramme neu rendern (brew install d2)
+./scripts/build-pdf.sh 4     # PDF mit Kapitel 1–4
+./scripts/build-docx.sh 4    # Word-Dokument mit Kapitel 1–4
 ```
 
-Die Datei landet in `build-out/` (nicht versioniert). Liegt eine `docs/vorlage.docx` vor, wird sie als Formatvorlage genutzt. Die finale Abgabe kommt nach `abgabe/PL1` bzw. `abgabe/PL2`.
-</details>
+Die Ergebnisse landen in `build-out/aktuell/` und werden nicht versioniert. Fertige Fassungen für Abgaben gibt es als [Release](../../releases).
 
-## Links
+## Diagramme ändern
 
-- arc42: [arc42.org](https://arc42.org) · [docs.arc42.org](https://docs.arc42.org) · [Praxistipps](https://docs.arc42.org/tips/1-1/)
-- Referenzbeispiele: [DokChess](https://www.dokchess.de/en/) · [biking2](https://biking.michael-simons.eu/docs/)
-- Qualitätsmodell: [Q42](https://quality.arc42.org)
+Die Diagramme liegen als D2-Quelltext in `docs/diagramme/`. Nach einer Änderung neu rendern, dafür wird zusätzlich [D2](https://d2lang.com) benötigt:
 
-<sub>Gliederung und Hilfetexte basieren auf dem [arc42-Template](https://github.com/arc42/arc42-template) (DE) von Dr. Peter Hruschka, Dr. Gernot Starke und Mitwirkenden, lizenziert unter [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).</sub>
+```bash
+./scripts/render-diagrams.sh
+```
+
+Die erzeugten PNG-Dateien werden mit eingecheckt, damit sich das Dokument auch ohne D2 bauen lässt.
+
+## Konventionen
+
+- Jedes Element hat eine ID (z. B. F-01, QZ-1, TR-3, S1, ST-1), damit die Kapitel aufeinander verweisen können.
+- Sprache Deutsch, Fachbegriffe wie State of Health im Original.
+- Architekturentscheidungen werden in Kapitel 9 als ADR begründet.

@@ -1,29 +1,87 @@
-# arc42 Kap. 3.1 – Fachlicher Kontext (System als Blackbox)
-...@_stil.d2
+# Fachlicher Kontext von VoltPass (arc42 Kap. 3.1), Notation angelehnt an UML wie im arc42-Beispiel Biking:
+# Strichmännchen = Mensch oder Organisation, Kasten «system» = technisches Nachbarsystem,
+# elk-rand: [top=45,left=40,bottom=25,right=40]
+# «intern» = gehört zu VoltCell selbst, gestrichelter Pfeil «flow» = fachlicher Datenfluss, Spitze = Richtung, beidseitig = Austausch.
+
+vars: {
+  d2-config: {
+    layout-engine: elk
+    sketch: true
+    pad: 20
+  }
+}
+
 direction: right
 
-zl_it: "Zulieferer\n(mit eigener IT)" {class: extern}
-zl_klein: "Zulieferer\n(Kleinbetrieb ohne IT)" {class: person}
-dv: "Datenverantwortliche\nVoltCell" {class: person}
-erp: "ERP / Produktion\nVoltCell" {class: extern}
+classes: {
+  akteur: {
+    shape: image
+    icon: ../bilder/icons/akteur_uml.svg
+    width: 34
+    height: 60
+    label.near: outside-bottom-center
+    style: {font-color: "#1a1a1a"; font-size: 18; bold: true}
+  }
+  system: {
+    width: 240
+    height: 80
+    icon: ../bilder/icons/komponente_uml.svg
+    icon.near: top-right
+    label.near: center-center
+    style: {fill: "#ffffff"; stroke: "#1a1a1a"; stroke-width: 1; font-color: "#1a1a1a"; font-size: 18; bold: true}
+  }
+}
 
-voltpass: "VoltPass\nBatteriepass-Plattform" {class: system; width: 260; height: 140}
+kontext: "cmp Fachlicher Kontext" {
+  label.near: top-left
+  style: {fill: "#ffffff"; stroke: "#1a1a1a"; stroke-width: 1; font-size: 15; bold: true}
+  direction: right
 
-oeff: "Öffentlichkeit /\nEndkunde" {class: person}
-werk: "Werkstatt" {class: person}
-rec: "Recycler" {class: person}
-beh: "Behörden\n(Marktaufsicht, Kommission)" {class: person}
-reg: "EU-Register\n(VO 2024/1781)" {class: extern}
-treu: "Treuhänder\n(Annahme A-3)" {class: annahme}
+  (** -> **)[*]: {
+    style: {stroke: "#1a1a1a"; stroke-width: 1; stroke-dash: 5; font-color: "#1a1a1a"; font-size: 16; italic: true}
+    target-arrowhead.shape: arrow
+  }
+  (** <-> **)[*]: {
+    style: {stroke: "#1a1a1a"; stroke-width: 1; stroke-dash: 5; font-color: "#1a1a1a"; font-size: 16; italic: true}
+    source-arrowhead.shape: arrow
+    target-arrowhead.shape: arrow
+  }
 
-zl_it -> voltpass: "Rohstoff-, CO₂-, Materialdaten"
-zl_klein -> voltpass: "Datenblätter (PDF, CSV),\nFormulareingaben"
-dv <-> voltpass: "Prüfaufgaben\n/ Korrekturen, Freigaben"
-erp <-> voltpass: "Seriennummer, Modell\n/ Kennung + QR-Code"
+  voltpass: "«system»\nVoltPass" {
+    width: 230
+    height: 620
+    icon: ../bilder/icons/komponente_uml.svg
+    icon.near: top-right
+    label.near: center-center
+    style: {fill: "#ffffff"; stroke: "#1a1a1a"; stroke-width: 2; font-color: "#1a1a1a"; font-size: 22; bold: true}
+  }
 
-voltpass -> oeff: "öffentliche Passdaten"
-voltpass <-> werk: "erweiterte Daten\n/ Zustand (SoH)"
-voltpass <-> rec: "Demontage-, Materialdaten\n/ Status „recycelt“"
-voltpass -> beh: "alle Passdaten\n+ Änderungshistorie"
-voltpass -> reg: "Kennung des Passes"
-voltpass -> treu: "Kopie aller Pässe"
+
+
+  # links: liefern Daten oder prüfen intern
+  zulieferer: "Zulieferer" {class: akteur}
+  datenverantwortliche: "«intern»\nDatenverantwortliche" {class: akteur}
+  compliance: "«intern»\nCompliance" {class: akteur}
+  erp: "«system, intern»\nERP und Produktion" {class: system}
+
+  # rechts: nutzen den Pass, Pflicht und Fortbestand
+  endkunde: "Endkunde" {class: akteur}
+  werkstatt: "Werkstatt" {class: akteur}
+  recycler: "Recycler und\nAufbereiter" {class: akteur}
+  behoerden: "Behörden und\nPrüfstellen" {class: akteur}
+  register: "«system»\nEU-Register" {class: system}
+  treuhaender: "«Annahme»\nTreuhänder" {class: akteur}
+
+  zulieferer -> voltpass: "liefern Rohstoff- und CO₂-Daten\nper Schnittstelle oder Browser\n«flow»"
+  datenverantwortliche <-> voltpass: "prüfen Werte an der Quelle,\ngeben frei oder korrigieren\n«flow»"
+  compliance <-> voltpass: "prüft Zugangsanträge,\nschaltet Fachbetriebe frei\n«flow»"
+  erp <-> voltpass: "meldet Seriennummer und Modell,\nerhält Kennung und QR-Code\n«flow»"
+
+  voltpass -> endkunde: "öffentliche Angaben\nper QR-Code\n«flow»"
+  voltpass <-> werkstatt: "erweiterte Passdaten,\nZustandsdaten\n«flow»"
+  voltpass <-> recycler: "Demontage- und Materialdaten,\nRecycling oder neuer Pass\n«flow»"
+  voltpass -> behoerden: "alle Daten\neinschließlich Historie\n«flow»"
+  voltpass -> register: "Kennung jedes\nveröffentlichten Passes\n«flow»"
+  voltpass -> treuhaender: "laufende Kopie aller\nPässe samt Historie\n«flow»"
+
+}

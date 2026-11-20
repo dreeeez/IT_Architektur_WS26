@@ -1,43 +1,64 @@
 # 4. Lösungsstrategie
 
-> **Status: Entwurf v0.1.** Technologieentscheidungen werden als ADR in Kap. 9 begründet.
-
 <!-- arc42-Hilfe:
 Kurzer Überblick über die grundlegenden Entscheidungen und Lösungsansätze: Technologie, Top-Level-Zerlegung,
 Ansätze zur Erreichung der wichtigsten Qualitätsziele, organisatorische Entscheidungen.
 KURZ zusammenfassen und auf Folgekapitel verweisen.
 Mehr: https://docs.arc42.org/section-4/
+Aufbau nach dem Beispiel des Dozenten (Vorlesung 19.11.2026): Strategien zu den Kernproblemen aus 1.1.
+Alter Entwurf v0.1: docs/archiv/kap4_entwurf_v0.1.md
 -->
 
-Die Strategie geht von drei Grundideen aus. Erstens geben **Menschen frei, nicht die KI**. Zweitens werden Daten **nie überschrieben, nur ergänzt**. Drittens gehört **die Adresse im QR-Code nicht zum Server**, auf dem der Pass liegt.
+## 4.1 Lösungsansätze zu den Kernproblemen
 
-![Lösungsidee: Datenfluss in VoltPass](../diagramme/04_loesungsidee.png)
+Die folgende Tabelle stellt den Kernproblemen aus der Aufgabenstellung die Lösungsstrategien gegenüber, mit Bezug zu den Qualitätszielen.
 
-## 4.1 Strategien
+| ID | Strategie | Ergebnis | Kernproblem | Qualitätsziele |
+|---|---|---|---|---|
+| ST-1 | **Kein Wert ohne Freigabe** • Alle Eingänge liefern in ein gemeinsames Datenmodell • Die KI liest Datenblätter aus • Ein Mensch prüft jeden Wert und gibt ihn frei | • Kein ungeprüfter Wert im Pass • Liefert ein Zulieferer in einem neuen Format, muss nur der Eingang erweitert werden | H-1<br>*Unzuverlässige Zulieferdaten* | QZ-1<br>*Verlässliche Passdaten*<br>QZ-5<br>*Änderbarkeit* |
+| ST-2 | **Zugriff je Feld, an einer Stelle geprüft** • Jedes Passfeld ist einer der drei Zugriffsstufen zugeordnet • Jeder Abruf läuft durch dieselbe Prüfung, die nicht erlaubte Felder entfernt | • Jede Rolle sieht nur ihre Felder • Ändert sich, wer was sehen darf, wird nur die Zuordnung angepasst | H-2<br>*Gestufter Zugriff* | QZ-3<br>*Rollengerechter Zugriff*<br>QZ-5<br>*Änderbarkeit* |
+| ST-3 | **Stabile Adresse und Treuhand-Kopie** • Der QR-Code zeigt auf eine eigene, übertragbare Pass-Domain • Der Treuhänder erhält laufend eine signierte Kopie | • QR-Code bleibt gültig • Pässe sind auch ohne VoltPass abrufbar | H-3<br>*Langlebiger QR-Code* | QZ-2<br>*Langfristige Erreichbarkeit* |
+| ST-4 | **Versionieren statt überschreiben** • Jede Änderung ist eine neue Version • Personen stehen nur als Kennung in der Historie | • Frühere Stände bleiben einsehbar • Ein Name lässt sich löschen, ohne die Historie zu ändern | H-4<br>*Nachweis trotz Datenschutz* | QZ-4<br>*Lückenlose Nachweisbarkeit* |
+| ST-5 | **Pässe aus Datenblättern ableiten** • Pässe verweisen auf Datenblätter, statt Werte zu kopieren • Eine neue Freigabe aktualisiert alle betroffenen Pässe | • Kein Pass bleibt mit falschen Daten zurück • Der Prüfaufwand bleibt bei 200.000 Pässen pro Jahr machbar | H-5<br>*Massenhafte Korrekturen* | QZ-1<br>*Verlässliche Passdaten*<br>QZ-4<br>*Lückenlose Nachweisbarkeit* |
 
-| ID | Strategie | Beschreibung | Bedient |
+## 4.2 Technologieentscheidungen {.neue-seite}
+
+| ID | Entscheidung | Begründung | Bezug |
 |---|---|---|---|
-| ST-1 | **Freigabe-Pipeline mit Mensch** | Daten durchlaufen feste Stufen: Eingang → Extraktion → Prüfung → Freigabe → Pass (Muster *Pipes and Filters*). Die KI liefert nur Vorschläge mit Fundstelle und Sicherheit, veröffentlicht wird erst nach menschlicher Freigabe. | F-02, F-03, QZ-1 |
-| ST-2 | **Ein Eingang, viele Adapter** | Jeder Eingangskanal (API, Datei, Formular) hat einen eigenen Adapter. Alle Adapter liefern dasselbe einheitliche Pass-Datenmodell (Muster *Adapter*). Neue Formate brauchen nur einen neuen Adapter. | F-01, TR-5, TR-6, QZ-5 |
-| ST-3 | **Stabile Adresse über einen Resolver** | Der QR-Code enthält nur eine dauerhafte Adresse auf eine eigene Domain mit der Kennung. Ein schlanker Resolver leitet von dort zum aktuellen Speicherort weiter. Fällt VoltCell weg, wird nur die Weiterleitung auf den Treuhänder umgestellt, der Code bleibt gültig. | F-05, F-08, TR-1, TR-2, QZ-2 |
-| ST-4 | **Versionieren statt überschreiben** | Jede Änderung erzeugt eine neue, unveränderliche Version mit Wer, Wann, Quelle und Begründung (append-only). Der aktuelle Pass ist die neueste freigegebene Version. | F-06, F-07, QZ-4, QZ-1 |
-| ST-5 | **Feldgenaue Zugriffsregeln an einer Stelle** | Jedes Passfeld wird einer Zugriffsstufe nach Anhang XIII zugeordnet. Eine zentrale Regel filtert bei jedem Abruf die Felder nach Rolle. Ändert die Kommission die Stufen, ändert sich nur diese Zuordnung. | F-05, F-06, OR-2, QZ-3 |
-| ST-6 | **Offenes Format und Treuhand-Kopie** | Pässe werden in einem offenen, maschinenlesbaren Format (JSON-LD) gespeichert und regelmäßig signiert an den Treuhänder exportiert. So kann ein Dritter die Pässe ohne VoltPass-Software weiter ausliefern. | F-08, OR-3, OR-5, TR-3, QZ-2, QZ-5 |
-| ST-7 | **Lesen und Schreiben trennen** | Freigegebene Pässe werden in einer leseoptimierten Form bereitgestellt, getrennt von der internen Bearbeitung (Muster *CQRS*). Die vielen Abrufe belasten so nicht die Prüfprozesse, und die öffentliche Seite hat keinen Zugang zu unfreigegebenen Daten. | F-05, TR-4, QZ-2, QZ-3 |
-| ST-8 | **Browser für alle Menschen** | Alle menschlichen Akteure arbeiten über eine Web-Oberfläche, eine App-Installation ist nicht nötig. Die Anmeldung läuft zentral über einen Identity Provider. | F-01, F-03, F-05, TR-6 |
+| TE-1 | AWS in Frankfurt als Zielbetrieb | Im Produktivbetrieb läuft VoltPass in der AWS-Region Frankfurt. Die Daten verlassen die EU nicht. | TR-9, OR-4 |
+| TE-2 | KI über Amazon Bedrock | Ein Sprachmodell über Amazon Bedrock in der EU liest die Datenblätter aus. VoltPass ruft es über eine eigene Schnittstelle auf, damit der Dienst austauschbar bleibt. | F-02, S6, QZ-5 |
+| TE-3 | Weboberfläche mit React | Alle Menschen arbeiten im Browser, eine Installation ist nicht nötig. Die Oberfläche entsteht mit React und Next.js. | TR-7, F-03, S1 |
+| TE-4 | Server mit TypeScript und NestJS | Oberfläche und Server nutzen dieselbe Sprache. NestJS gliedert den Server in Module, die den späteren Bausteinen entsprechen. | TR-9, OR-6 |
+| TE-5 | PostgreSQL als Datenbank | Verbreitet, Open Source und für JSON geeignet. Damit lassen sich die Versionen und die Historie aus ST-4 sicher speichern. Im Prototyp läuft sie als Container, im Zielbetrieb als verwalteter Dienst von AWS. | TR-3, F-08, ST-4 |
+| TE-6 | JSON-LD als Passformat | Pässe werden maschinenlesbar und ohne Anbieterbindung ausgeliefert und an den Treuhänder exportiert. | TR-3, F-05, S2, S3, S5 |
+| TE-7 | Prototyp lokal in Containern | Der Prototyp läuft mit Docker Compose lokal, nur die KI wird über einen API-Schlüssel bei Amazon Bedrock aufgerufen. Weil Dateien über eine eigene Speicher-Schnittstelle abgelegt und Einstellungen nur über Umgebungsvariablen gesetzt werden, laufen dieselben Container später auf AWS. | TR-10, OR-6, OR-9 |
 
-## 4.2 Abdeckung der Qualitätsziele
+## 4.3 Der Aufbau von VoltPass
 
-| Qualitätsziel | Strategien | Details |
+VoltPass ist ein modularer Monolith: eine einzige Anwendung, intern in klar getrennte Module gegliedert. Microservices wären für ein kleines Team im Betrieb zu aufwendig, die klaren Modulgrenzen erlauben aber, einzelne Module später abzuspalten.
+
+![](../diagramme/04_grobe_zerlegung.png)
+
+Die Pfeile zeigen den Datenfluss: Nur Datenblätter durchlaufen die KI-Extraktion, während Daten aus Schnittstellen und Formularen direkt zur Prüfung gelangen. Die Marker ordnen die Strategien aus 4.1 den jeweiligen Bausteinen zu.
+
+Die Module sprechen nur über eigene Schnittstellen miteinander, NestJS setzt sie per Dependency Injection zusammen. So lassen sich etwa der KI-Dienst oder der Dateispeicher austauschen und jedes Modul einzeln testen. Die Bausteine folgen den Prinzipien hohe Kohäsion und lose Kopplung: Jeder hat genau eine fachliche Aufgabe und hängt möglichst wenig von den anderen ab. Der Weg vom Eingang bis zur Passverwaltung ist an das Muster Pipes and Filters angelehnt.
+
+| ID | Baustein | Aufgabe |
 |---|---|---|
-| QZ-1 Verlässliche Passdaten | ST-1, ST-4 | Kap. 8 (Datenqualität), ADR folgt |
-| QZ-2 Langfristige Erreichbarkeit | ST-3, ST-6, ST-7 | Kap. 7, Kap. 8 (Langzeitverfügbarkeit) |
-| QZ-3 Rollengerechter Zugriff | ST-5, ST-7 | Kap. 8 (Sicherheit) |
-| QZ-4 Lückenlose Nachweisbarkeit | ST-4 | Kap. 8 (Audit) |
-| QZ-5 Interoperabilität | ST-2, ST-6 | Kap. 8 (Datenformat) |
+| B-1 | Eingang | Nimmt Daten aus Schnittstelle, Upload und Formular an und bringt sie in das gemeinsame Datenmodell. |
+| B-2 | KI-Extraktion | Schickt Datenblätter an Amazon Bedrock und speichert die zurückgelieferten Werte als Vorschläge. |
+| B-3 | Prüfung und Freigabe | Datenverantwortliche prüfen jeden Wert an seiner Quelle, geben ihn frei, korrigieren ihn oder fragen nach. |
+| B-4 | Passverwaltung | Vergibt Kennung und QR-Code, verwaltet Pässe, ihre Versionen und die Verweise auf Datenblätter. |
+| B-5 | Zugriffsprüfung | Prüft jeden Abruf nach Rolle und Freischaltung und entfernt nicht erlaubte Felder. |
+| B-6 | Auslieferung | Stellt freigegebene Pässe über die Passadresse aus dem QR-Code, die Weboberfläche und die REST-API bereit. |
+| B-7 | Export | Überträgt alle Pässe samt Historie an den Treuhänder und meldet jeden veröffentlichten Pass an das EU-Register. |
 
-## 4.3 Grobe Zerlegung und Technologie
+Die Bausteinsicht in Kapitel 5 beschreibt die Bausteine im Detail.
 
-- **Zerlegung:** Die Bausteine folgen dem Datenfluss im Diagramm oben: ① Eingang, ② Extraktion, ③ Prüfung und Freigabe, ④ Pass-Register, ⑤ Auslieferung und ⑥ Export. Dazu kommt der Resolver, der bewusst getrennt betrieben wird. Die Details folgen in Kap. 5.
-- **Technologie:** offen, wird per ADR entschieden. Leitlinien: verbreitete Open-Source-Komponenten (wegen TR-3, QZ-5), Betrieb in der EU (wegen A-5), die KI-Extraktion als austauschbarer Dienst hinter einer eigenen Schnittstelle.
-- **Prototyp (Vorschlag, noch nicht entschieden):** F-01 bis F-03 und F-05 als **vertikaler Slice**: Datenblatt hochladen → Werte extrahieren → prüfen und freigeben → Pass über eine stabile Adresse rollenabhängig anzeigen.
+## 4.4 Organisatorische Entscheidungen
+
+| ID | Entscheidung | Beschreibung | Bezug |
+|---|---|---|---|
+| OE-1 | Prototyp zeigt einen kompletten Ablauf | Ein Datenblatt wird hochgeladen, die KI liest es aus, und ein Mensch prüft und gibt die Werte frei. Danach ist der Pass per QR-Code öffentlich und für eine angemeldete Rolle abrufbar. | F-01, F-02, F-03, F-05, OR-9 |
+| OE-2 | Fremdsysteme im Prototyp simuliert | ERP, EU-Register und Treuhänder werden im Prototyp nicht real angebunden. Stattdessen antworten Platzhalter, die VoltPass genauso aufruft wie später die echten Systeme. | TR-8, OR-6 |
+| OE-3 | Wesentliche Entscheidungen als ADR | Die wesentlichen Entscheidungen aus 4.2 und 4.3 werden in Kapitel 9 mit Kontext, Alternativen, Begründung und Konsequenzen dokumentiert. | KV-5 |

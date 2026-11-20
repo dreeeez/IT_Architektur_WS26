@@ -1,0 +1,61 @@
+# Grobe Zerlegung von VoltPass (arc42 Kap. 4.3), Notation angelehnt an UML wie die Kontextdiagramme:
+# Kasten mit Komponentensymbol = Modul innerhalb von VoltPass, gestrichelter Pfeil = Weg der Daten (wie «flow» im fachlichen Kontext).
+# Die letzte Zeile eines Moduls („ST-1“ …) wird beim Rendern zum schwarzen Marker:
+# elk-abstand: 28
+# elk-rand: [top=40,left=30,bottom=20,right=30]
+# sie verortet die Strategien aus 4.1 in den Bausteinen, wie die Marker (a)–(f) bei DokChess.
+
+vars: {
+  d2-config: {
+    layout-engine: elk
+    sketch: true
+    pad: 20
+  }
+}
+
+direction: right
+
+classes: {
+  modul: {
+    width: 175
+    height: 64
+    icon: ../bilder/icons/komponente_uml.svg
+    icon.near: top-right
+    label.near: center-center
+    style: {fill: "#ffffff"; stroke: "#1a1a1a"; stroke-width: 1; font-color: "#1a1a1a"; font-size: 17; bold: true}
+  }
+}
+
+zerlegung: "cmp Aufbau von VoltPass" {
+  label.near: top-left
+  style: {fill: "#ffffff"; stroke: "#1a1a1a"; stroke-width: 1; font-size: 15; bold: true}
+
+  (** -> **)[*]: {
+    style: {stroke: "#1a1a1a"; stroke-width: 1; stroke-dash: 5; font-color: "#1a1a1a"; font-size: 15; italic: true}
+    target-arrowhead.shape: arrow
+  }
+
+  voltpass: "«system»\nVoltPass" {
+    label.near: top-center
+    icon: ../bilder/icons/komponente_uml.svg
+    icon.near: top-right
+    style: {fill: "#ffffff"; stroke: "#1a1a1a"; stroke-width: 2; font-color: "#1a1a1a"; font-size: 20; bold: true}
+    direction: right
+
+    eingang: "B-1 Eingang\nST-1" {class: modul}
+    ki: "B-2 KI-\nExtraktion\nST-1" {class: modul}
+    freigabe: "B-3 Prüfung\nund Freigabe\nST-1" {class: modul}
+    pass: "B-4 Pass-\nverwaltung\nST-4, ST-5" {class: modul}
+    zugriff: "B-5 Zugriffs-\nprüfung\nST-2" {class: modul}
+    auslieferung: "B-6 Aus-\nlieferung\nST-3" {class: modul}
+    export: "B-7 Export\nST-3" {class: modul}
+
+    eingang -> ki: "Datenblätter"
+    ki -> freigabe: "Vorschläge"
+    eingang -> freigabe: "fertige Werte"
+    freigabe -> pass
+    pass -> zugriff
+    zugriff -> auslieferung: "erlaubte\nFelder"
+    pass -> export
+  }
+}
