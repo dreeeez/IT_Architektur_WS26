@@ -4,5 +4,5 @@ Wird von `scripts/deckblatt.py` (PDF) und `scripts/build-docx.sh` (Word) für da
 
 - Marco Schneider
 - Sina Lutz
-- Till
+- Till Cornely
 - Amina Nedzibovic
