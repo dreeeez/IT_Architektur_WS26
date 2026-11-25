@@ -47,15 +47,15 @@ Der Pass zeigt Rohstoffherkunft, CO₂-Fußabdruck, Zustand und Recycling. Die D
 
 ## 1.2 Qualitätsziele
 
-Die Ziele sind nach Priorität geordnet und orientieren sich am Qualitätsmodell ISO/IEC 25010.
+Die Ziele sind nach Priorität geordnet und orientieren sich am Qualitätsmodell ISO/IEC 25010. Die Zielgröße macht jedes Ziel messbar, die ausführlichen Szenarien folgen in Kap. 10.
 
-| ID | Qualitätsziel | Motivation |
-|---|---|---|
-| QZ-1 | Verlässliche Passdaten | Der Pass ist ein rechtlich relevantes Dokument. Jeder Wert ist belegt und von einem Menschen freigegeben, auch wenn KI oder Zulieferer Fehler machen. |
-| QZ-2 | Langfristige Erreichbarkeit | Der QR-Code ist aufgedruckt und nicht änderbar. Er führt über die gesamte Lebensdauer der Batterie zum richtigen Pass, auch wenn es VoltCell nicht mehr gibt. |
-| QZ-3 | Rollengerechter Zugriff | Jede Rolle sieht und ändert nur die Felder, die ihr zustehen. |
-| QZ-4 | Lückenlose Nachweisbarkeit | Für jede Angabe ist belegbar, wer sie wann aus welcher Quelle geändert hat. Die Historie lässt sich nicht manipulieren. |
-| QZ-5 | Änderbarkeit | Neue Datenfelder, Rollen, regulatorische Anforderungen und KI-Dienste müssen ohne grundlegenden Umbau des Systems integriert werden können. |
+| ID | Qualitätsziel | Motivation | Zielgröße |
+|---|---|---|---|
+| QZ-1 | Verlässliche Passdaten | Der Pass ist ein rechtlich relevantes Dokument. Jeder Wert ist belegt und von einem Menschen freigegeben, auch wenn KI oder Zulieferer Fehler machen. | 100 % der veröffentlichten Werte mit Quellbeleg und Freigabe |
+| QZ-2 | Langfristige Erreichbarkeit | Der QR-Code ist aufgedruckt und nicht änderbar. Er führt über die gesamte Lebensdauer der Batterie zum richtigen Pass, auch wenn es VoltCell nicht mehr gibt. | 15 Jahre erreichbar, bei Wegfall von VoltCell in ≤ 30 Tagen beim Treuhänder (A-2) |
+| QZ-3 | Rollengerechter Zugriff | Jede Rolle sieht und ändert nur die Felder, die ihr zustehen. | 0 Felder außerhalb der eigenen Zugriffsstufe sichtbar |
+| QZ-4 | Lückenlose Nachweisbarkeit | Für jede Angabe ist belegbar, wer sie wann aus welcher Quelle geändert hat. Die Historie lässt sich nicht manipulieren. | 100 % der Änderungen mit Person, Zeitpunkt und Quelle, jede Manipulation wird erkannt |
+| QZ-5 | Änderbarkeit | Neue Datenfelder, Rollen, regulatorische Anforderungen und KI-Dienste müssen ohne grundlegenden Umbau des Systems integriert werden können. | Neues Feld oder neuer KI-Dienst ändert nur ein Modul |
 
 ## 1.3 Stakeholder
 

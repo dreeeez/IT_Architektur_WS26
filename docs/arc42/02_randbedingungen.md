@@ -50,3 +50,15 @@ Mehr: https://docs.arc42.org/section-2/
 | KV-3 | Durchgehende IDs | Jedes Element hat eine ID, damit alle Kapitel aufeinander verweisen können. |
 | KV-4 | Diagramme | Alle Diagramme einheitlich in D2, Schnittstellen mit ID. |
 | KV-5 | Architekturentscheidungen | Als ADR in Kap. 9 mit Kontext, Alternativen, Begründung und Konsequenzen. |
+
+## 2.4 Annahmen {.neue-seite}
+
+| ID | Annahme | Hintergrund / Motivation |
+|---|---|---|
+| A-1 | Unabhängiger Treuhänder | Fällt VoltCell weg, übernimmt ein beauftragter Treuhänder die Pässe. Darauf bauen F-10, P-10 und ST-3 auf. |
+| A-2 | Zielwerte für die Erreichbarkeit | 15 Jahre Erreichbarkeit und eine Übernahme durch den Treuhänder in 30 Tagen (QZ-2) sind unser Vorschlag. Die Verordnung verlangt mindestens 10 Jahre, nennt aber keine Übernahmefrist. |
+| A-3 | ERP und Firmen-Login vorhanden | VoltCell hat ein ERP, das Seriennummer und Modell jeder Batterie kennt und den Etikettendruck steuert (P-01), sowie einen Firmen-Login über OpenID Connect (S7). Die Schnittstellen beider Systeme nehmen wir an. |
+| A-4 | Betrieb in einer EU-Cloud | VoltCell erlaubt den Betrieb von VoltPass in einer EU-Cloud, auch für den KI-Dienst (TE-1, TE-2). |
+| A-5 | Kein Hochrisiko-System nach EU AI Act | Die KI liefert nur Vorschläge, die ein Mensch freigibt (ST-1). Wir nehmen an, dass VoltPass damit nicht als Hochrisiko-System gilt. |
+| A-6 | EU-Register mit REST-Schnittstelle | Das EU-Register nimmt Pass-Kennungen per REST entgegen (S4). Im Prototyp wird es simuliert (OE-2). |
+| A-7 | Werkstatt-Einträge ohne weitere Freigabe | Einträge angemeldeter Werkstätten gelten ohne weitere Freigabe durch VoltCell als freigegeben (F-07). Die Werkstatt ist dabei verantwortliche Person und Quelle, damit gilt QZ-1 auch für diese Werte. |
