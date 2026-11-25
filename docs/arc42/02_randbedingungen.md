@@ -45,7 +45,7 @@ Mehr: https://docs.arc42.org/section-2/
 
 | ID | Konvention | Hintergrund / Motivation |
 |---|---|---|
-| KV-1 | Architekturdokumentation | Aufbau nach arc42, Abgabe als Word-Dokument. |
+| KV-1 | Architekturdokumentation | Aufbau nach arc42 als Docs-as-Code (Markdown), Abgabe als PDF. |
 | KV-2 | Sprache | Deutsch, Fachbegriffe wie State of Health im Original. |
 | KV-3 | Durchgehende IDs | Jedes Element hat eine ID, damit alle Kapitel aufeinander verweisen können. |
 | KV-4 | Diagramme | Alle Diagramme einheitlich in D2, Schnittstellen mit ID. |
